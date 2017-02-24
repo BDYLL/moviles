@@ -37,7 +37,7 @@ public class Calendar extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
                 try {
-                    currentDate=new SimpleDateFormat("yyyy-MM-dd").parse(year+"-"+month+"-"+dayOfMonth);
+                    currentDate=new SimpleDateFormat("yyyy-MM-dd").parse(year+"-"+(month+1)+"-"+dayOfMonth);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -56,7 +56,8 @@ public class Calendar extends AppCompatActivity {
 
     public void getDate(View v){
         Intent i = new Intent(this,Main2Activity.class);
-        i.putExtra("date",new SimpleDateFormat("yyyy-MM-dd").format(currentDate));
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(currentDate);
+        i.putExtra("date",date);
         setResult(Activity.RESULT_OK,i);
         finish();
     }

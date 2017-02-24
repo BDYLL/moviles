@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Collections;
@@ -45,7 +46,7 @@ public class Main2Activity extends AppCompatActivity {
 
         this.db = new DBHelper(this);
 
-        this.activities=this.db.getAll();
+        this.activities=this.db.find(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 
         Collections.reverse(this.activities);
 

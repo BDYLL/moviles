@@ -95,7 +95,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
         c.close();
 
-        return Collections.unmodifiableList(result);
+        return result;
     }
 
     public List<String> find(int id){
