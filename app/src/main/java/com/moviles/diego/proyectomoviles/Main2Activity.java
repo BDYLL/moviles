@@ -84,6 +84,7 @@ public class Main2Activity extends AppCompatActivity {
 
     public void sendToCalendar(View v){
         Intent i = new Intent(this,Calendar.class);
+        i.putExtra("currentDate",(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(new Date()));
         this.startActivityForResult(i,CALENDAR);
     }
 
@@ -101,6 +102,7 @@ public class Main2Activity extends AppCompatActivity {
             List<String> result = this.db.find(date);
             this.activities.clear();
             this.activities.addAll(result);
+            Collections.reverse(this.activities);
             this.aa.notifyDataSetChanged();
         }
     }

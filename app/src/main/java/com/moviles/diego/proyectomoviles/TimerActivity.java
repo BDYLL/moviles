@@ -19,6 +19,8 @@ public class TimerActivity extends AppCompatActivity {
 
     private long startTime=0l;
 
+    private boolean isRunning=false;
+
     private Timer t;
 
     private final Handler h = new Handler(new Handler.Callback() {
@@ -68,17 +70,23 @@ public class TimerActivity extends AppCompatActivity {
         this.start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startTime=System.currentTimeMillis();
-                t=new Timer();
-                t.schedule(new UpdateTimer(),0,1000);
+                if(!isRunning) {
+                    startTime = System.currentTimeMillis();
+                    t = new Timer();
+                    t.schedule(new UpdateTimer(), 0, 1000);
+                    isRunning = true;
+                }
             }
         });
 
         this.stop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                t.cancel();
-                t.purge();
+                if(isRunning) {
+                    t.cancel();
+                    t.purge();
+                    isRunning=false;
+                }
             }
         });
     }
