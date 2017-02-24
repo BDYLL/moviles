@@ -115,6 +115,25 @@ public class DBHelper extends SQLiteOpenHelper{
 
         c.close();
 
-        return Collections.unmodifiableList(result);
+        return result;
+    }
+
+    public List<String> getAll(){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String[] columns = {NOMBRE_FIELD,START_TIME_FIELD};
+
+        Cursor c = db.query(TABLE_NAME,columns,null,null,null,null,null);
+
+        List<String> result= new ArrayList<>();
+
+
+        for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
+            result.add(c.getString(c.getColumnIndex(NOMBRE_FIELD))+","+c.getString(c.getColumnIndex(START_TIME_FIELD)));
+        }
+
+        c.close();
+
+        return result;
     }
 }
