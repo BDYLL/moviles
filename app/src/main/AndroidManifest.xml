@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Main3Activity" />
-        <activity android:name=".Calendar"></activity>
+        <activity android:name=".Calendar" />
+        <activity android:name=".TimerActivity"></activity>
     </application>
 
 </manifest>

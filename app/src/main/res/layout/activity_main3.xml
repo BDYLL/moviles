@@ -14,7 +14,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Actividad"
         android:ems="10"
         android:layout_marginTop="41dp"
         android:id="@+id/nameText"
@@ -29,4 +28,13 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="163dp"
         android:id="@+id/send" />
+
+    <TextView
+        android:text="Nombre de la actividad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp"
+        android:id="@+id/textView" />
 </RelativeLayout>
