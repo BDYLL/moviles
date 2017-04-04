@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,11 @@ public class Main2Activity extends AppCompatActivity {
     private ArrayAdapter<String> aa;
     private DBHelper db;
     private Button goToCalendar;
+
+    private ListView sideList;
+    private ArrayAdapter<String> sideMenuOptions;
+
+    public static final List<String> options = Collections.unmodifiableList(Arrays.asList("Calendar"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,26 @@ public class Main2Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 sendToForm(view);
+            }
+        });
+
+        this.sideList=(ListView)this.findViewById(R.id.list2);
+
+
+        this.sideMenuOptions=new ArrayAdapter<String>(this,R.layout.drawer_item,options);
+
+        this.sideList.setAdapter(this.sideMenuOptions);
+
+        this.sideList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String selected = options.get(position);
+
+                switch (selected){
+                    case "Calendar":
+                        sendToCalendar(view);
+                        break;
+                }
             }
         });
 
