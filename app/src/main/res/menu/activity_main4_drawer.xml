@@ -7,6 +7,10 @@
                 android:icon="@drawable/calendar"
 
                 android:title="Calendar"/>
+        <item
+                android:id="@+id/toChart"
+                android:icon="@drawable/piechart"
+                android:title="Calendar"/>
 
     </group>
 

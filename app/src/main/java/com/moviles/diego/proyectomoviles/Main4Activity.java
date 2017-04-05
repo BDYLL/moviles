@@ -110,6 +110,10 @@ public class Main4Activity extends AppCompatActivity
         this.startActivityForResult(i,CALENDAR);
     }
 
+    public void sendToChart(View v){
+        this.startActivity(new Intent(this,ChartActivity.class));
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(Activity.RESULT_OK==resultCode && requestCode==ACT3){
             String activity = data.getStringExtra("name");
@@ -170,6 +174,9 @@ public class Main4Activity extends AppCompatActivity
         switch (id){
             case R.id.toCalendar:
                 sendToCalendar(null);
+                break;
+            case R.id.toChart:
+                sendToChart(null);
                 break;
         }
 
