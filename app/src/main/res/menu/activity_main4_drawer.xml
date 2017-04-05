@@ -10,7 +10,7 @@
         <item
                 android:id="@+id/toChart"
                 android:icon="@drawable/piechart"
-                android:title="Calendar"/>
+                android:title="Chart"/>
 
     </group>
 
