@@ -98,6 +98,25 @@ public class DBHelper extends SQLiteOpenHelper{
         return result;
     }
 
+    public int getId(String date){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        String selection = START_TIME_FIELD+" = ?";
+        String[] args={date};
+        String[] columns={ID_FIELD};
+        Cursor c = db.query(TABLE_NAME,columns,selection,args,null,null,null,null);
+
+        int result=-1;
+
+        if(c.moveToFirst()){
+            result=c.getInt(c.getColumnIndex(ID_FIELD));
+        }
+
+        return result;
+    }
+
     public List<String> find(int id){
         SQLiteDatabase db = this.getReadableDatabase();
 

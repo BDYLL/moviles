@@ -27,7 +27,7 @@ public class Main4Activity extends AppCompatActivity
 
 
     private ListView list;
-    private static final int ACT3=3,CALENDAR=4,TIMER=5;
+    private static final int ACT3=3,CALENDAR=4,TIMER=5,SUB_ACTIVITY=6;
     private List<String> activities;
     private ArrayAdapter<String> aa;
     private DBHelper db;
@@ -54,7 +54,8 @@ public class Main4Activity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        //drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -66,7 +67,27 @@ public class Main4Activity extends AppCompatActivity
         this.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                sendToTimer(((TextView)view).getText().toString());
+                sendToTimer(((TextView) view).getText().toString());
+            }
+        });
+
+        this.list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String text= ((TextView)view).getText().toString();
+                String[] row=text.split(",");
+
+
+                String dateText = row[1];
+                String actName=row[0];
+
+                int dateId=db.getId(dateText);
+
+                //Toast.makeText(Main4Activity.this,dateId+"",Toast.LENGTH_SHORT).show();
+                sendToSubActivity(dateId,actName);
+
+                return true;
             }
         });
 
@@ -114,6 +135,15 @@ public class Main4Activity extends AppCompatActivity
         this.startActivity(new Intent(this,ChartActivity.class));
     }
 
+    public void sendToSubActivity(int id,String actName){
+        Intent i = new Intent(this,Main3Activity.class);
+
+        i.putExtra("id",id);
+        i.putExtra("actName",actName);
+
+        this.startActivityForResult(i,SUB_ACTIVITY);
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         if(Activity.RESULT_OK==resultCode && requestCode==ACT3){
             String activity = data.getStringExtra("name");
@@ -130,6 +160,13 @@ public class Main4Activity extends AppCompatActivity
             this.activities.addAll(result);
             Collections.reverse(this.activities);
             this.aa.notifyDataSetChanged();
+        }
+        if(Activity.RESULT_OK==resultCode && requestCode==SUB_ACTIVITY){
+
+            String name = data.getStringExtra("name");
+            int id = data.getIntExtra("id",-1);
+
+            Toast.makeText(this,name+" : "+id,Toast.LENGTH_SHORT).show();
         }
     }
 
