@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class DBHelper extends SQLiteOpenHelper{
 
     private static final String
-            DB_NAME="activities.db",
+            DB_NAME="activities2.db",
             TABLE_NAME="ACTIVITY",
             ID_FIELD="ID",
             NOMBRE_FIELD="NOMBRE",
@@ -52,10 +52,15 @@ public class DBHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        String[] name={TABLE_NAME};
+        /*String[] name={TABLE_NAME};
         db.execSQL("DROP TABLE IF EXISTS ?",name);
         onCreate(db);
+        */
+        db.delete(TABLE_NAME,null,null);
+        onCreate(db);
     }
+
+
 
     public void add(String name,String startTime, int parent){
         SQLiteDatabase db = this.getWritableDatabase();
