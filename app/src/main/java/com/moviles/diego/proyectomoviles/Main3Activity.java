@@ -18,6 +18,7 @@ public class Main3Activity extends AppCompatActivity {
     private String actName;
     private TextView message;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,7 @@ public class Main3Activity extends AppCompatActivity {
             this.message.setText("Nombre de subactividad de "+actName);
 
         }
+
 
     }
 

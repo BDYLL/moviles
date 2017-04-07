@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,9 +18,7 @@ import android.view.MenuItem;
 import android.widget.*;
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class Main4Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -67,7 +66,15 @@ public class Main4Activity extends AppCompatActivity
         this.list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                sendToTimer(((TextView) view).getText().toString());
+
+                String text= ((TextView)view).getText().toString();
+                String[] row=text.split(",");
+
+                String dateText = row[1];
+
+                int dateId=db.getId(dateText);
+
+                sendToTimer(text,dateId);
             }
         });
 
@@ -115,10 +122,12 @@ public class Main4Activity extends AppCompatActivity
     }
 
 
-    public void sendToTimer(String s){
+
+    public void sendToTimer(String s,int id){
         Intent i = new Intent(this,TimerActivity.class);
         i.putExtra("activity",s);
-        this.startActivity(i);
+        i.putExtra("id",id);
+        this.startActivityForResult(i,TIMER);
     }
 
     public void sendToForm(View v){
@@ -132,7 +141,28 @@ public class Main4Activity extends AppCompatActivity
     }
 
     public void sendToChart(View v){
-        this.startActivity(new Intent(this,ChartActivity.class));
+
+
+        final List<String> days=Arrays.asList("Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo");
+
+
+        TreeMap<String,Integer> seconds = new TreeMap<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return days.indexOf(o1)-days.indexOf(o2);
+            }
+        });
+
+
+        seconds.putAll(this.db.getChartInfo());
+
+        Log.d("seconds",seconds.toString());
+
+        Intent i = new Intent(this,ChartActivity.class);
+
+        i.putIntegerArrayListExtra("com.moviles.diego.proyectomoviles.Days",new ArrayList<Integer>(seconds.values()));
+
+        this.startActivity(i);
     }
 
     public void sendToSubActivity(int id,String actName){
@@ -167,6 +197,13 @@ public class Main4Activity extends AppCompatActivity
             int id = data.getIntExtra("id",-1);
 
             Toast.makeText(this,name+" : "+id,Toast.LENGTH_SHORT).show();
+        }
+        if(Activity.RESULT_OK==resultCode && requestCode==TIMER){
+            int time=data.getIntExtra("time",-1);
+            //Toast.makeText(this,time+"",Toast.LENGTH_SHORT).show();
+            int id =data.getIntExtra("id",-1);
+            int rowChanged=this.db.updateTime(id,time);
+            Toast.makeText(this,rowChanged+"",Toast.LENGTH_SHORT).show();
         }
     }
 

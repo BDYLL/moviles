@@ -1,5 +1,6 @@
 package com.moviles.diego.proyectomoviles;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -32,6 +34,10 @@ public class TimerActivity extends AppCompatActivity {
 
     private static final int ID_NOTIFICATION=0;
 
+    private int time=-1;
+
+    private int id;
+
     private final Handler h = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
@@ -42,6 +48,8 @@ public class TimerActivity extends AppCompatActivity {
             int hours = minutes/60;
             seconds     = seconds % 60;
             minutes = minutes%60;
+
+            time+=1;
 
             String text = String.format("%02d : %02d : %02d",hours,minutes,seconds);
 
@@ -76,6 +84,8 @@ public class TimerActivity extends AppCompatActivity {
         this.startTime=System.currentTimeMillis();
 
         Intent i = this.getIntent();
+
+        this.id=i.getIntExtra("id",-1);
 
         this.timer.setText("00 : 00 : 00");
 
@@ -123,5 +133,21 @@ public class TimerActivity extends AppCompatActivity {
     }
     private void stopNotification(){
         this.manager.cancel(ID_NOTIFICATION);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+
+        if(time>0) {
+
+            Intent i = new Intent();
+            i.putExtra("time", time);
+            i.putExtra("id",id);
+            this.setResult(Activity.RESULT_OK,i);
+
+        }
+        super.onBackPressed();
     }
 }
