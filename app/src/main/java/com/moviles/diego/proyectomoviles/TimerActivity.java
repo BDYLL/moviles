@@ -94,8 +94,8 @@ public class TimerActivity extends AppCompatActivity {
         this.builder=new NotificationCompat.Builder(this);
 
         this.builder
-                .setSmallIcon(R.drawable.timer)
-                .setContentTitle("Timer")
+                .setSmallIcon(R.drawable.small_timer)
+                .setContentTitle("Cronometro")
                 .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setOngoing(true);
 
