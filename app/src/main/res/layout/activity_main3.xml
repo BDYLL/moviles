@@ -37,4 +37,13 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="14dp"
         android:id="@+id/textView" />
+
+    <Button
+            android:text="View SubActivities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_sub"
+            android:layout_below="@+id/send"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="97dp"/>
 </RelativeLayout>

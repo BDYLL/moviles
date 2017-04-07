@@ -18,6 +18,7 @@ public class Main3Activity extends AppCompatActivity {
     private String actName;
     private TextView message;
 
+    private Button viewSub;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,16 @@ public class Main3Activity extends AppCompatActivity {
 
         this.message=(TextView)this.findViewById(R.id.textView);
 
+
+        this.viewSub=(Button)this.findViewById(R.id.view_sub);
+
+        this.viewSub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToSubList(v);
+            }
+        });
+
         Intent i = this.getIntent();
 
         this.id=i.getIntExtra("id",-1);
@@ -46,8 +57,21 @@ public class Main3Activity extends AppCompatActivity {
             this.message.setText("Nombre de subactividad de "+actName);
 
         }
+        else{
+
+            this.viewSub.setVisibility(View.GONE);
+        }
 
 
+
+    }
+
+    public void goToSubList(View v){
+        Intent i = new Intent(this,SubListActivity.class);
+
+        i.putExtra("id",this.id);
+
+        this.startActivity(i);
     }
 
     public void goBack(View v){

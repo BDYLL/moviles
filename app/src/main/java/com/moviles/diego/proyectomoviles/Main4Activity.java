@@ -196,14 +196,17 @@ public class Main4Activity extends AppCompatActivity
             String name = data.getStringExtra("name");
             int id = data.getIntExtra("id",-1);
 
-            Toast.makeText(this,name+" : "+id,Toast.LENGTH_SHORT).show();
+            String date = (new SimpleDateFormat("yyyy-MM-dd hh:mm:ss")).format(new Date());
+
+            this.db.add(name,date,id);
+            //Toast.makeText(this,name+" : "+id,Toast.LENGTH_SHORT).show();
         }
         if(Activity.RESULT_OK==resultCode && requestCode==TIMER){
             int time=data.getIntExtra("time",-1);
             //Toast.makeText(this,time+"",Toast.LENGTH_SHORT).show();
             int id =data.getIntExtra("id",-1);
             int rowChanged=this.db.updateTime(id,time);
-            Toast.makeText(this,rowChanged+"",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this,rowChanged+"",Toast.LENGTH_SHORT).show();
         }
     }
 

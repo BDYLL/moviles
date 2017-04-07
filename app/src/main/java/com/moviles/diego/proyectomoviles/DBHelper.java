@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 public class DBHelper extends SQLiteOpenHelper{
 
     private static final String
-            DB_NAME="activities2.db",
+            DB_NAME="activities3.db",
             TABLE_NAME="ACTIVITY",
             ID_FIELD="ID",
             NOMBRE_FIELD="NOMBRE",
@@ -43,7 +43,7 @@ public class DBHelper extends SQLiteOpenHelper{
                 +START_TIME_FIELD+" DATETIME, " +
                 START_TIME_DAYS_FIELD+" DATETIME, "+
                 TOTAL_TIME_FIELD+" INTEGER DEFAULT 0 , "+
-                ID_PARENT_FIELD+" INTEGER, "+
+                ID_PARENT_FIELD+" INTEGER  DEFAULT -1, "+
                 "FOREIGN KEY(" +ID_PARENT_FIELD+") REFERENCES " +TABLE_NAME+"("+ID_FIELD+") )";
 
 
@@ -89,6 +89,7 @@ public class DBHelper extends SQLiteOpenHelper{
 
         db.insert(TABLE_NAME,null,cv);
     }
+
 
     public Map<String,Integer> getChartInfo(){
 
@@ -222,13 +223,20 @@ public class DBHelper extends SQLiteOpenHelper{
 
         String selection = START_TIME_DAYS_FIELD+" = ?";
         String[] args={date};
-        String[] columns={NOMBRE_FIELD,START_TIME_FIELD};
+        String[] columns={NOMBRE_FIELD,START_TIME_FIELD,ID_PARENT_FIELD};
         Cursor c = db.query(TABLE_NAME,columns,selection,args,null,null,null,null);
 
         List<String> result = new ArrayList<String>();
 
+        int idParent;
+
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-            result.add(c.getString(c.getColumnIndex(NOMBRE_FIELD))+","+c.getString(c.getColumnIndex(START_TIME_FIELD)));
+
+            idParent=c.getInt(c.getColumnIndex(ID_PARENT_FIELD));
+
+            if(idParent<0) {
+                result.add(c.getString(c.getColumnIndex(NOMBRE_FIELD)) + "," + c.getString(c.getColumnIndex(START_TIME_FIELD)));
+            }
         }
 
         c.close();
@@ -276,19 +284,45 @@ public class DBHelper extends SQLiteOpenHelper{
         return result;
     }
 
+    public List<String> getAllSubActivities(int id){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = ID_PARENT_FIELD+" = ?";
+        String[] args ={Integer.toString(id)};
+        String[] columns= {NOMBRE_FIELD,START_TIME_FIELD};
+
+        Cursor c = db.query(TABLE_NAME,columns,selection,args,null,null,null);
+
+        List<String> result = new ArrayList<>();
+
+        for(c.moveToFirst();!c.isAfterLast();c.moveToNext()){
+
+            result.add(c.getString(c.getColumnIndex(NOMBRE_FIELD))+","+c.getString(c.getColumnIndex(START_TIME_FIELD)));
+
+        }
+
+        return result;
+    }
+
+
     public List<String> getAll(){
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String[] columns = {NOMBRE_FIELD,START_TIME_FIELD,TOTAL_TIME_FIELD};
+        String[] columns = {NOMBRE_FIELD,START_TIME_FIELD,TOTAL_TIME_FIELD,ID_PARENT_FIELD};
 
         Cursor c = db.query(TABLE_NAME,columns,null,null,null,null,null);
 
         List<String> result= new ArrayList<>();
 
+        int idParent;
 
         for (c.moveToFirst(); !c.isAfterLast(); c.moveToNext()) {
-            result.add(c.getString(c.getColumnIndex(NOMBRE_FIELD))+","
-                    +c.getString(c.getColumnIndex(START_TIME_FIELD))+","+c.getInt(c.getColumnIndex(TOTAL_TIME_FIELD)));
+            idParent=c.getInt(c.getColumnIndex(ID_PARENT_FIELD));
+            if(idParent<0) {
+                result.add(c.getString(c.getColumnIndex(NOMBRE_FIELD)) + ","
+                        + c.getString(c.getColumnIndex(START_TIME_FIELD)) + "," + c.getInt(c.getColumnIndex(TOTAL_TIME_FIELD)));
+            }
         }
 
         c.close();
